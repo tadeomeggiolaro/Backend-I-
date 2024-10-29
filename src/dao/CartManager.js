@@ -8,8 +8,13 @@ export class CartManager {
 
     }
     getCart(id) {
+        
         const carts = readJSON('../data/carts.json');
-        return carts.find(cart => cart.id === id)
+        const cart = carts.find(cart => cart.id === id)
+        if(cart == undefined){
+            throw new Error(`El carrito con el ID ${id} no se encontró en nuestra base de datos`, {cause:404})
+        }
+        return cart
     }
 
     createCart() {
@@ -23,18 +28,13 @@ export class CartManager {
     deleteCart(id) {
         const carts = readJSON('../data/carts.json');
         const newArrayCart = carts.filter(cart => cart.id !== id)
-        // updateNewChangesInDB
         writeJSON('../data/carts.json', newArrayCart);
         return newArrayCart
     }
     addProduct(cartId, productId) {
-
         const carts = this.getCarts()
-
         const cartIndex = carts.findIndex(c => c.id == cartId)
-        
         const productInCart = carts[cartIndex].products.findIndex(product => product.productId == productId)
-
         if (productInCart > -1) {
             carts[cartIndex].products[productInCart].quantity++
         }

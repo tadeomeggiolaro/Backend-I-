@@ -86,5 +86,19 @@
     "nombre": "Aruba",
     "precio": 100000,
     "imagen": "https://i.pinimg.com/564x/d7/66/77/d76677968aa090994227632730d64c06.jpg"
+  },
+  {
+    "tipo": "buzo",
+    "nombre": "argelia",
+    "precio": 30000,
+    "imagen": "https://i.pinimg.com/564x/06/70/9b/06709b3af3de53e796bbf78db9e3ea22.jpg",
+    "id": "8c93d131-faf6-47ef-a41d-07e7531c8af8"
+  },
+  {
+    "tipo": "buzo",
+    "nombre": "argelia",
+    "precio": 30000,
+    "imagen": "https://i.pinimg.com/564x/06/70/9b/06709b3af3de53e796bbf78db9e3ea22.jpg",
+    "id": "8c93d131-faf6-47ef-a41d-07e7531c8af8"
   }
 ]

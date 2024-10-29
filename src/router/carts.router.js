@@ -12,9 +12,16 @@ cartRouter.get('/', (_, res) => {
 });
 
 cartRouter.get('/:cid', (req, res) => {
-    const id = req.params.cid
-    const cartManager = new CartManager()
-    res.send(cartManager.getCart(id))
+    try {
+        const id = req.params.cid
+        const cartManager = new CartManager()
+        const cart = cartManager.getCart(id)
+        res.send(cart)
+    } catch (error) {
+        res.status(error.cause).send(error.message)  
+    }
+    
+    
 
 });
 cartRouter.post('/', (_, res) => {
