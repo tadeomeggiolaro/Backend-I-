@@ -1,2 +1,32 @@
-<section>{{#each products}} <div>{{this.nombre}}{{this.precio}}{{/each}}</div></section>
+<section>
+{{#each products.payload}}
+  <div>
+    <h3>{{this.nombre}} - ${{this.precio}}</h3>
+    <button class="button-add-to-cart" data-id="{{this._id}}" data-nombre="{{this.nombre}}" data-precio="{{this.precio}}">Add to cart</button>
+  </div>
+{{/each}}
 
+  
+  <button 
+    id="previousPage" 
+    data-url="{{products.prevLink}}" 
+    {{#unless products.prevLink}} 
+      disabled="disabled" 
+    {{/unless}}
+  >
+    Prev page
+  </button>
+  
+  <button 
+    id="nextPage" 
+    data-url="{{products.nextLink}}" 
+    {{#unless products.nextLink}} 
+      disabled="disabled" 
+    {{/unless}}
+  >
+    Next page
+  </button>
+
+<button  id="viewCart" >View Cart</button>
+</section>
+<script src="/js/pages.js"></script>

@@ -1,54 +1,74 @@
-import { v4 as uuidv4 } from 'uuid'
-import { readJSON, writeJSON } from "../utils/fileshandle.js"
+import productsModels from '../models/products.models.js'
 export class ProductosManager {
 
 
-    getProducts(limitProduct) {
-        const products = readJSON('products.json')
-        if (limitProduct != undefined) {
-            products.length = limitProduct
-            return products
+    async getProducts(req, res, limit, page,  sort,query) {
+        let filter = {}
+        if (query) {
+            const [field, value] = query.split(':');
+            filter = {
+                [field]: { $regex: value, $options: 'i' },
+            };
         }
-        return products
+        const limitNum = parseInt(limit);
+        const pageNum = parseInt(page);
+        const sortOption = sort ? { precio: sort === 'asc' ? 1 : -1 } : {};
+
+        const products = await productsModels.find(filter)
+            .sort(sortOption)
+            .skip((pageNum - 1) * limitNum)
+            .limit(limitNum).lean();
+
+        const totalProducts = await productsModels.countDocuments(filter);
+        const totalPages = Math.ceil(totalProducts / limitNum);
+
+        const hasPrevPage = pageNum > 1;
+        const hasNextPage = pageNum < totalPages;
+
+        const baseUrl = `${req.protocol}://${req.get('host')}${req.baseUrl}`;
+        const prevLink = hasPrevPage ? `${baseUrl}/products?limit=${limit}&page=${pageNum - 1}${sort ? `&sort=${sort}` : ''}${query ? `&query=${query}` : ''}` : null;
+        const nextLink = hasNextPage ? `${baseUrl}/products?limit=${limit}&page=${pageNum + 1}${sort ? `&sort=${sort}` : ''}${query ? `&query=${query}` : ''}` : null;
+
+        return ({
+            status: 'success',
+            payload: products,
+            totalPages,
+            prevPage: hasPrevPage ? pageNum - 1 : null,
+            nextPage: hasNextPage ? pageNum + 1 : null,
+            page: pageNum,
+            hasPrevPage,
+            hasNextPage,
+            prevLink,
+            nextLink,
+        });
+
     }
 
-    getProduct(id) {
-        const products = readJSON('products.json')
-        const productsfound = products.find(product => product.id === id)
-        if (productsfound == undefined) {
+    async getProduct(id) {
+        const product = await productsModels.findById(id);
+        if (product == undefined) {
             throw new Error(`El producto con el ID ${id} no se encontró en nuestra base de datos`, { cause: 404 })
         }
 
-        return productsfound
+        return product
 
     }
-    updateProduct(id, updateRequest) {
-        const products = readJSON('products.json')
-        const product = this.getProduct(id)
-        const updatedProduct = { ...product, ...updateRequest, id }
-        const productIndex = products.findIndex(product => product.id === id)
-        products[productIndex] = updatedProduct
-        writeJSON('products.json', products);
+    async updateProduct(id, updateRequest) {
+        const updatedProduct = await productsModels.findByIdAndUpdate(id, updateRequest, { new: true });
         return updatedProduct
     }
-    createProduct(createRequest) {
-        const products = readJSON('products.json')
+    async createProduct(createRequest) {
         if (createRequest.precio == undefined || createRequest.tipo == undefined || createRequest.nombre == undefined || createRequest.imagen == undefined || typeof createRequest.precio !== 'number') {
             throw new Error('There are mandatory fields missing')
         }
         delete createRequest?.id
-        const newProduct = { ...createRequest, id: uuidv4() }
-        const newArrayProduct = [...products, newProduct]
-        writeJSON('products.json',newArrayProduct);
-        return products
-
+        const product = new productsModels(createRequest);
+        await product.save();
+        return product
     }
-    deleteProduct(id) {
-        const products = readJSON('products.json')
-        const newArrayProduct = products.filter(product => product.id !== id)
-        writeJSON('products.json', newArrayProduct);
-        // updateNewChangesInDB
-        return newArrayProduct
+    async deleteProduct(id) {
+        await productsModels.findByIdAndDelete(id);
+        return products
     }
 }
 

@@ -1,55 +1,59 @@
 import { Router } from 'express';
-import { ProductosManager } from '../dao/ProductosManager.js';
 import { CartManager } from '../dao/CartManager.js';
 const cartRouter = Router();
 
 
 
 
-cartRouter.get('/', (_, res) => {
+cartRouter.get('/', async (_, res) => {
     const cartManager = new CartManager()
-    res.send(cartManager.getCarts())
+    res.send(await cartManager.getCarts())
 });
 
-cartRouter.get('/:cid', (req, res) => {
+cartRouter.get('/:cid', async (req, res) => {
     try {
         const id = req.params.cid
         const cartManager = new CartManager()
-        const cart = cartManager.getCart(id)
+        const cart = await cartManager.getCart(id)
         res.send(cart)
     } catch (error) {
-        res.status(error.cause).send(error.message)  
+        res.status(error.cause).send(error.message)
     }
-    
-    
+
+
 
 });
-cartRouter.post('/', (_, res) => {
+cartRouter.post('/', async (_, res) => {
     try {
         const cartManager = new CartManager()
-        res.send(cartManager.createCart())
+        res.send(await cartManager.createCart())
     } catch (error) {
         res.status(500).send(error.message)
     }
 
 });
-cartRouter.post('/:cid/product/:pid', (req, res) => {
+cartRouter.post('/:cid/products/:pid', async (req, res) => {
     try {
         const cartManager = new CartManager()
         const cartId = req.params.cid
         const productId = req.params.pid
-        res.send(cartManager.addProduct(cartId,productId))
+        const action = req.query.action
+        if (action == 'remove') {
+            res.send(await cartManager.addProduct(cartId, productId));
+        } else if (action == 'add') {
+            res.send(await cartManager.addProduct(cartId, productId))
+        }
     } catch (error) {
         res.status(500).send(error.message)
     }
 
 });
 
-cartRouter.put('/:cid', (req, res) => {
+cartRouter.put('/:cid', async (req, res) => {
     const id = req.params.cid
     const updateRequest = req.body
     const cartManager = new CartManager()
-    res.send(cartManager.updateProduct(id, updateRequest))
+    res.send(await cartManager.updateProduct(id, updateRequest))
 });
 
 

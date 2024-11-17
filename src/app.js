@@ -6,10 +6,12 @@ import __dirname from './dirname.js'
 import renderRouter from "./router/render.router.js";
 import { Server } from "socket.io";
 import realTimeProductRouter from "./router/realTimeProduct.route.js";
+import connectDB from "./db.config.js";
 const PORT = 8080
 
 const app = express()
 const httpServer = app.listen(PORT,()=>{
+    connectDB()
     console.log(`server online en el puerto ${PORT}`)
 })
 

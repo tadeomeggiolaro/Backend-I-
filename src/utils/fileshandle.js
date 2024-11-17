@@ -1,16 +1,11 @@
-
 import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { join } from 'path';
+
 
 
 
 const readJSON = (fileName) => {
     try {
-        const filePath = './src/data/'+fileName
-        
-        // if (!existsSync(filePath)) {
-        //     return []; 
-        // }
+        const filePath = './src/data/' + fileName
         const data = readFileSync(filePath, 'utf-8');
         return JSON.parse(data);
     } catch (error) {
@@ -22,7 +17,7 @@ const readJSON = (fileName) => {
 
 const writeJSON = (fileName, data) => {
     try {
-        const filePath = './src/data/'+fileName
+        const filePath = './src/data/' + fileName
         writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf-8');
     } catch (error) {
         console.error(`Error al escribir en el archivo ${fileName}:`, error);

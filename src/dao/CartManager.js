@@ -1,47 +1,84 @@
-import { v4 as uuidv4 } from 'uuid'
-import { readJSON, writeJSON } from "../utils/fileshandle.js";
+
+import cartsModel from '../models/carts.model.js';
 export class CartManager {
 
-    getCarts() {
-        const carts = readJSON('../data/carts.json');
+    async getCarts() {
+        const carts = await cartsModel.find();
         return carts
 
     }
-    getCart(id) {
+    async getCart(id) {
         
-        const carts = readJSON('../data/carts.json');
-        const cart = carts.find(cart => cart.id === id)
+        const cart = await cartsModel.findById(id).populate('products.product').lean()
         if(cart == undefined){
             throw new Error(`El carrito con el ID ${id} no se encontró en nuestra base de datos`, {cause:404})
         }
         return cart
     }
 
-    createCart() {
-        const carts = readJSON('../data/carts.json');
-        const newCart = { products: [], id: uuidv4() }
-        carts.push(newCart)
-        writeJSON('../data/carts.json', carts);
-        return carts
+    async createCart() {
+        const cart = new cartsModel();
+        await cart.save();
+        return await this.getCarts()
+    }
+    async deleteCart(id) {
+        await cartsModel.findByIdAndDelete(id);
+        return await this.getCarts()
+    }
+    async addProduct(cartId, productId) {
+        const cart = await cartsModel.findById(cartId);
+        const existingProduct = cart.products.find(p => p.product.toString() === productId);
 
-    }
-    deleteCart(id) {
-        const carts = readJSON('../data/carts.json');
-        const newArrayCart = carts.filter(cart => cart.id !== id)
-        writeJSON('../data/carts.json', newArrayCart);
-        return newArrayCart
-    }
-    addProduct(cartId, productId) {
-        const carts = this.getCarts()
-        const cartIndex = carts.findIndex(c => c.id == cartId)
-        const productInCart = carts[cartIndex].products.findIndex(product => product.productId == productId)
-        if (productInCart > -1) {
-            carts[cartIndex].products[productInCart].quantity++
+        if (existingProduct) {
+            
+            existingProduct.quantity += 1;
+        } else {
+            
+            cart.products.push({ product: productId, quantity: 1 });
         }
-        else (carts[cartIndex].products.push({ productId, quantity: 1 }))
-        writeJSON('../data/carts.json', carts);
-        return carts
-    }
 
+        await cart.save();
+        return cart
+        
+    }
+    removeProduct = async (cartId, productId) => {
+            const cart = await this.getCart(cartId);
+            const productIndex = cart.products.findIndex(p => p.product.toString() === productId);
+            if (productIndex === -1) {
+                throw new Error(`El producto con el ID ${id} no se encontró en nuestra base de datos`, {cause:404})
+            }
+            cart.products.splice(productIndex, 1);
+            await cart.save();
+            return cart
+    };
+    removeQuantity = async (cartId, productId) => {
+            const cart = await this.getCart(cartId);
+            const product = cart.products.find(p => p.product.toString() === productId);
+            if (!product) {
+                throw new Error(`El producto con el ID ${id} no se encontró en nuestra base de datos`, {cause:404})
+            }
+            if (product.quantity > 1) {
+                product.quantity -= 1;
+            } else {
+                cart.products = cart.products.filter(p => p.product.toString() !== productId);
+            }
+    
+            await cart.save();
+            return cart
+    };
+    
+    
+    addQuantity = async (cartId, productId) => {
+            
+            const cart = await this.getCart(cartId);
+            
+            const product = cart.products.find(p => p.product.toString() === productId);
+            if (!product) {
+                throw new Error(`El producto con el ID ${id} no se encontró en nuestra base de datos`, {cause:404})            }
+            product.quantity += 1;
+            await cart.save();
+            return cart
+    };
+    
 }
 

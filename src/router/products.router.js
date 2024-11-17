@@ -1,34 +1,33 @@
-// routes/products.js
 import { Router } from 'express';
-import { ProductosManager } from '../dao/ProductosManager.js';
+import { ProductosManager } from '../dao/productosManager.js';
 const productRouter = Router();
 
 
-productRouter.get('/', (req, res) => {
+productRouter.get('/', async (req, res) => {
+    const { limit = 10, page = 1, sort, query } = req.query;
     const productosManager = new ProductosManager()
-    const limitProduct = req.query.limit
-    res.send(productosManager.getProducts(limitProduct))
+    res.send(await productosManager.getProducts(req, res, limit, page, sort, query))
 });
 
-productRouter.get('/:pid', (req, res) => {
+productRouter.get('/:pid', async (req, res) => {
     try {
         const id = req.params.pid
         const productosManager = new ProductosManager()
-        const product = productosManager.getProduct(id)
+        const product = await productosManager.getProduct(id)
         res.send(product)
-        
-    } catch (error){
-        res.status(error.cause).send(error.message)   
+
+    } catch (error) {
+        res.status(error.cause).send(error.message)
     }
 
 });
 
-productRouter.post('/', (req, res) => {
+productRouter.post('/', async (req, res) => {
     try {
         const createRequest = req.body
         const productosManager = new ProductosManager()
-        const products = productosManager.createProduct(createRequest)
-        req.serverSocket.emit(`updateProducts`,products)
+        const products = await productosManager.createProduct(createRequest)
+        req.serverSocket.emit(`updateProducts`, products)
         res.send(products)
     } catch (error) {
         res.status(500).send(error.message)
@@ -36,21 +35,22 @@ productRouter.post('/', (req, res) => {
 
 });
 
-productRouter.put('/:pid', (req, res) => {
+productRouter.put('/:pid', async (req, res) => {
     const id = req.params.pid
     const updateRequest = req.body
     const productosManager = new ProductosManager()
-    const product= productosManager.updateProduct(id, updateRequest)
-    const arrayProducts = productosManager.getProducts()
-    req.serverSocket.emit(`updateProducts`,arrayProducts)
+    const product = await productosManager.updateProduct(id, updateRequest)
+    const arrayProducts = await productosManager.getProducts(req, res)
+    req.serverSocket.emit(`updateProducts`, arrayProducts)
     res.send(product)
 });
 
-productRouter.delete('/:pid', (req, res) => {
+productRouter.delete('/:pid', async (req, res) => {
     const id = req.params.pid
     const productosManager = new ProductosManager()
-    const products = productosManager.deleteProduct(id)
-    req.serverSocket.emit(`updateProducts`,products)
+    await productosManager.deleteProduct(id)
+    const products = productosManager.getProducts(req, res)
+    req.serverSocket.emit(`updateProducts`, products)
     res.send(products)
 });
 
