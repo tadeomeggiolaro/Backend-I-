@@ -1,51 +1,72 @@
-import productsModels from '../models/products.models.js'
+import {productosModelo} from '../models/productos.models.js'
 export class ProductosManager {
 
 
-    async getProducts(req, res, limit, page,  sort,query) {
-        let filter = {}
+    async getProducts(req, res, limit, page, sort, query) {
+        
+        let filter = {};
         if (query) {
             const [field, value] = query.split(':');
             filter = {
-                [field]: { $regex: value, $options: 'i' },
+                [field]: { $regex: value, $options: 'i' }, 
             };
         }
-        const limitNum = parseInt(limit);
-        const pageNum = parseInt(page);
-        const sortOption = sort ? { precio: sort === 'asc' ? 1 : -1 } : {};
-
-        const products = await productsModels.find(filter)
-            .sort(sortOption)
-            .skip((pageNum - 1) * limitNum)
-            .limit(limitNum).lean();
-
-        const totalProducts = await productsModels.countDocuments(filter);
-        const totalPages = Math.ceil(totalProducts / limitNum);
-
-        const hasPrevPage = pageNum > 1;
-        const hasNextPage = pageNum < totalPages;
-
-        const baseUrl = `${req.protocol}://${req.get('host')}${req.baseUrl}`;
-        const prevLink = hasPrevPage ? `${baseUrl}/products?limit=${limit}&page=${pageNum - 1}${sort ? `&sort=${sort}` : ''}${query ? `&query=${query}` : ''}` : null;
-        const nextLink = hasNextPage ? `${baseUrl}/products?limit=${limit}&page=${pageNum + 1}${sort ? `&sort=${sort}` : ''}${query ? `&query=${query}` : ''}` : null;
-
-        return ({
-            status: 'success',
-            payload: products,
-            totalPages,
-            prevPage: hasPrevPage ? pageNum - 1 : null,
-            nextPage: hasNextPage ? pageNum + 1 : null,
-            page: pageNum,
-            hasPrevPage,
-            hasNextPage,
-            prevLink,
-            nextLink,
-        });
-
+    
+        
+        const limitNum = parseInt(limit) || 10;
+        const pageNum = parseInt(page) || 1; 
+    
+        let sortOption = {};
+        if (sort?.includes('price')) {
+            sortOption = { price: sort === 'price_asc' ? 1 : -1 }; 
+        } else if (sort?.includes('title')) {
+            sortOption = { title: sort === 'title_asc' ? 1 : -1 }; 
+        }
+    
+        try {
+            
+            const products = await productosModelo.paginate(filter, {
+                page: pageNum,
+                limit: limitNum,
+                sort: sortOption,
+                lean: true,
+            });
+    
+            
+            const baseUrl = `${req.protocol}://${req.get('host')}${req.baseUrl}`;
+            const prevLink = products.hasPrevPage
+                ? `${baseUrl}/products?limit=${limitNum}&page=${products.prevPage}${sort ? `&sort=${sort}` : ''}${query ? `&query=${query}` : ''}`
+                : null;
+            const nextLink = products.hasNextPage
+                ? `${baseUrl}/products?limit=${limitNum}&page=${products.nextPage}${sort ? `&sort=${sort}` : ''}${query ? `&query=${query}` : ''}`
+                : null;
+    
+            
+            return {
+                status: 'success',
+                payload: products.docs,
+                totalPages: products.totalPages,
+                prevPage: products.hasPrevPage ? products.prevPage : null,
+                nextPage: products.hasNextPage ? products.nextPage : null,
+                page: products.page,
+                hasPrevPage: products.hasPrevPage,
+                hasNextPage: products.hasNextPage,
+                prevLink,
+                nextLink,
+            };
+        } catch (err) {
+            
+            return {
+                status: 'error',
+                message: 'Error al obtener los productos',
+                details: err.message,
+            };
+        }
     }
+    
 
     async getProduct(id) {
-        const product = await productsModels.findById(id);
+        const product = await productosModelo.findById(id);
         if (product == undefined) {
             throw new Error(`El producto con el ID ${id} no se encontró en nuestra base de datos`, { cause: 404 })
         }
@@ -54,20 +75,22 @@ export class ProductosManager {
 
     }
     async updateProduct(id, updateRequest) {
-        const updatedProduct = await productsModels.findByIdAndUpdate(id, updateRequest, { new: true });
+        await this.getProduct(id)
+        const updatedProduct = await productosModelo.findByIdAndUpdate(id, updateRequest, { new: true });
         return updatedProduct
     }
     async createProduct(createRequest) {
-        if (createRequest.precio == undefined || createRequest.tipo == undefined || createRequest.nombre == undefined || createRequest.imagen == undefined || typeof createRequest.precio !== 'number') {
+        if (createRequest.price == undefined || createRequest.category == undefined || createRequest.title == undefined || createRequest.stock == undefined|| typeof createRequest.price !== 'number') {
             throw new Error('There are mandatory fields missing')
         }
         delete createRequest?.id
-        const product = new productsModels(createRequest);
+        const product = new productosModelo(createRequest);
         await product.save();
         return product
     }
     async deleteProduct(id) {
-        await productsModels.findByIdAndDelete(id);
+        await this.getProduct(id)
+        await productosModelo.findByIdAndDelete(id);
         return products
     }
 }

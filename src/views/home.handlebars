@@ -1,31 +1,59 @@
 <section>
-{{#each products.payload}}
-  <div>
-    <h3>{{this.nombre}} - ${{this.precio}}</h3>
-    <button class="button-add-to-cart" data-id="{{this._id}}" data-nombre="{{this.nombre}}" data-precio="{{this.precio}}">Add to cart</button>
-  </div>
-{{/each}}
+  <section>
+  <h1>Products</h1>
+  
+  
 
-  
-  <button 
-    id="previousPage" 
-    data-url="{{products.prevLink}}" 
-    {{#unless products.prevLink}} 
-      disabled="disabled" 
-    {{/unless}}
-  >
-    Prev page
-  </button>
-  
-  <button 
-    id="nextPage" 
-    data-url="{{products.nextLink}}" 
-    {{#unless products.nextLink}} 
-      disabled="disabled" 
-    {{/unless}}
-  >
-    Next page
-  </button>
+  <form id="filtersForm" action="/products" method="GET">
+
+    <div>
+      <label for="sort">Ordenar por:</label>
+      <select name="sort" id="sort">
+        <option value="price_asc">Precio: Menor a Mayor</option>
+        <option value="price_desc">Precio: Mayor a Menor</option>
+        <option value="title_asc">Nombre: A-Z</option>
+        <option value="title_desc">Nombre: Z-A</option>
+      </select>
+    </div>
+<label for="limitSelect">Mostrar:</label>
+  <select id="limitSelect" name="limit">
+    <option value="5" >5</option>
+    <option value="10" >10</option>
+    <option value="25" >25</option>
+  </select>
+
+    <div>
+      <label for="category">Filtrar por categoría:</label>
+      <select name="category" id="category">
+        <option value="buzo">Buzos</option>
+      </select>
+    </div>
+
+    <button type="submit">Aplicar Filtros</button>
+  </form>
+
+  <!-- Lista de productos -->
+  <div id="productsList">
+    {{#each products.payload}}
+      <div class="product">
+        <h3>{{this.title}}</h3>
+        <p>Precio: ${{this.price}}</p>
+        <p>Categoría: {{this.category}}</p>
+      </div>
+    {{/each}}
+  </div>
+
+  <!-- Paginación -->
+  <div id="pagination">
+    {{#if products.hasPrevPage}}
+      <button data-url="{{products.prevLink}}" class="pagination-button">Página Anterior</button>
+    {{/if}}
+    {{#if products.hasNextPage}}
+      <button data-url="{{products.nextLink}}" class="pagination-button">Página Siguiente</button>
+    {{/if}}
+  </div>
+</section>
+
 
 <button  id="viewCart" >View Cart</button>
 </section>

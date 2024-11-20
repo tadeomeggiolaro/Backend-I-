@@ -52,6 +52,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 });
+document.getElementById('limitSelect').addEventListener('change', (e) => {
+    const selectedLimit = e.target.value; 
+    const urlParams = new URLSearchParams(window.location.search);
+
+    
+    urlParams.set('limit', selectedLimit);
+    urlParams.set('page', 1); 
+
+    
+    window.location.href = `${window.location.pathname}?${urlParams.toString()}`;
+});
 
 
 async function addToCart(cartId, productId) {

@@ -1,104 +1,104 @@
 [
   {
-    "tipo": "buzo",
+    "category": "buzo",
     "id": "c5c7764f-27d3-465e-b2c9-33716a20b615",
-    "nombre": "Afganistán",
-    "precio": 30000,
-    "imagen": "https://i.pinimg.com/564x/06/70/9b/06709b3af3de53e796bbf78db9e3ea22.jpg"
+    "title": "Afganistán",
+    "price": 30000,
+    "thumbnails": "https://i.pinimg.com/564x/06/70/9b/06709b3af3de53e796bbf78db9e3ea22.jpg"
   },
   {
-    "tipo": "buzo",
+    "category": "buzo",
     "id": "85b629bd-4f29-4739-bfa0-1134cf20842a",
-    "nombre": "Albania",
+    "title": "Albania",
     "talles": [
       "S",
       "L"
     ],
-    "precio": 50000,
-    "imagen": "https://i.pinimg.com/736x/36/f6/69/36f669718113b996d282dde165f819ee.jpg"
+    "price": 50000,
+    "thumbnails": "https://i.pinimg.com/736x/36/f6/69/36f669718113b996d282dde165f819ee.jpg"
   },
   {
-    "tipo": "buzo",
+    "category": "buzo",
     "id": "bf72c2f7-f4ca-4d45-8551-10a8753aa3ec",
-    "nombre": "Alemania",
-    "precio": 40000,
-    "imagen": "https://i.pinimg.com/564x/7e/f5/4c/7ef54c69d75b813b3d375aa2e2f0e9dd.jpg"
+    "title": "Alemania",
+    "price": 40000,
+    "thumbnails": "https://i.pinimg.com/564x/7e/f5/4c/7ef54c69d75b813b3d375aa2e2f0e9dd.jpg"
   },
   {
-    "tipo": "buzo",
+    "category": "buzo",
     "id": "6fe74dbb-93dd-4a25-95de-32381dc31beb",
-    "nombre": "Andorra",
-    "precio": 70000,
-    "imagen": "https://i.pinimg.com/736x/48/28/57/482857417d93cd5adaf36ffe5ce41c17.jpg"
+    "title": "Andorra",
+    "price": 70000,
+    "thumbnails": "https://i.pinimg.com/736x/48/28/57/482857417d93cd5adaf36ffe5ce41c17.jpg"
   },
   {
-    "tipo": "buzo",
+    "category": "buzo",
     "id": "e9105ed2-6e28-47ba-b21a-00efc5a77cb1",
-    "nombre": "Angola",
-    "precio": 15000,
-    "imagen": "https://i.pinimg.com/736x/c4/81/51/c48151a39dcd5855eaad318ee09dd67d.jpg"
+    "title": "Angola",
+    "price": 15000,
+    "thumbnails": "https://i.pinimg.com/736x/c4/81/51/c48151a39dcd5855eaad318ee09dd67d.jpg"
   },
   {
-    "tipo": "buzo",
+    "category": "buzo",
     "id": "8b1994b4-3931-4a4c-b861-c9464b3e925b",
-    "nombre": "Antártida",
-    "precio": 90000,
-    "imagen": "https://i.pinimg.com/564x/80/b6/1d/80b61dbd1fe0cdc4dde2660ee1616c8c.jpg"
+    "title": "Antártida",
+    "price": 90000,
+    "thumbnails": "https://i.pinimg.com/564x/80/b6/1d/80b61dbd1fe0cdc4dde2660ee1616c8c.jpg"
   },
   {
-    "tipo": "buzo",
+    "category": "buzo",
     "id": "f7d44e55-3da1-48c7-9d76-4840e1e47373",
-    "nombre": "Antigua y Barbuda",
-    "precio": 150000,
-    "imagen": "https://i.pinimg.com/564x/4e/a8/ef/4ea8efcbf8396fc4ab3da18a40675e97.jpg"
+    "title": "Antigua y Barbuda",
+    "price": 150000,
+    "thumbnails": "https://i.pinimg.com/564x/4e/a8/ef/4ea8efcbf8396fc4ab3da18a40675e97.jpg"
   },
   {
-    "tipo": "buzo",
+    "category": "buzo",
     "id": "bd370594-9d08-47fc-84ba-0f82e3b5b804",
-    "nombre": "Arabia Saudita",
-    "precio": 100000,
-    "imagen": "https://i.pinimg.com/564x/02/c8/e2/02c8e2a1a6f3d0e833b7f7da5707ffd8.jpg"
+    "title": "Arabia Saudita",
+    "price": 100000,
+    "thumbnails": "https://i.pinimg.com/564x/02/c8/e2/02c8e2a1a6f3d0e833b7f7da5707ffd8.jpg"
   },
   {
-    "tipo": "buzo",
+    "category": "buzo",
     "id": "b04987f8-e2db-44f7-a2ef-7f3986de08be",
-    "nombre": "Argelia",
-    "precio": 110000,
-    "imagen": "https://i.pinimg.com/564x/a1/80/68/a18068c079fe1bbce10f5f2aa4b23ceb.jpg"
+    "title": "Argelia",
+    "price": 110000,
+    "thumbnails": "https://i.pinimg.com/564x/a1/80/68/a18068c079fe1bbce10f5f2aa4b23ceb.jpg"
   },
   {
-    "tipo": "buzo",
+    "category": "buzo",
     "id": "8b3facee-d426-46f4-86d0-273123f687ca",
-    "nombre": "Argentina",
-    "precio": 120000,
-    "imagen": "https://i.pinimg.com/564x/aa/5e/be/aa5ebef6d06a12309d1221b9cded3436.jpg"
+    "title": "Argentina",
+    "price": 120000,
+    "thumbnails": "https://i.pinimg.com/564x/aa/5e/be/aa5ebef6d06a12309d1221b9cded3436.jpg"
   },
   {
-    "tipo": "buzo",
+    "category": "buzo",
     "id": "a900093c-9e5d-49fc-bbb2-fff0cefb26c9",
-    "nombre": "Armenia",
-    "precio": 100000,
-    "imagen": "https://i.pinimg.com/564x/92/13/95/92139560a46421ceba4fa6c02518996b.jpg"
+    "title": "Armenia",
+    "price": 100000,
+    "thumbnails": "https://i.pinimg.com/564x/92/13/95/92139560a46421ceba4fa6c02518996b.jpg"
   },
   {
-    "tipo": "buzo",
+    "category": "buzo",
     "id": "36215b56-ee6e-47ea-9090-f2508c1c3f51",
-    "nombre": "Aruba",
-    "precio": 100000,
-    "imagen": "https://i.pinimg.com/564x/d7/66/77/d76677968aa090994227632730d64c06.jpg"
+    "title": "Aruba",
+    "price": 100000,
+    "thumbnails": "https://i.pinimg.com/564x/d7/66/77/d76677968aa090994227632730d64c06.jpg"
   },
   {
-    "tipo": "buzo",
-    "nombre": "argelia",
-    "precio": 30000,
-    "imagen": "https://i.pinimg.com/564x/06/70/9b/06709b3af3de53e796bbf78db9e3ea22.jpg",
+    "category": "buzo",
+    "title": "argelia",
+    "price": 30000,
+    "thumbnails": "https://i.pinimg.com/564x/06/70/9b/06709b3af3de53e796bbf78db9e3ea22.jpg",
     "id": "8c93d131-faf6-47ef-a41d-07e7531c8af8"
   },
   {
-    "tipo": "buzo",
-    "nombre": "argelia",
-    "precio": 30000,
-    "imagen": "https://i.pinimg.com/564x/06/70/9b/06709b3af3de53e796bbf78db9e3ea22.jpg",
+    "category": "buzo",
+    "title": "argelia",
+    "price": 30000,
+    "thumbnails": "https://i.pinimg.com/564x/06/70/9b/06709b3af3de53e796bbf78db9e3ea22.jpg",
     "id": "8c93d131-faf6-47ef-a41d-07e7531c8af8"
   }
 ]

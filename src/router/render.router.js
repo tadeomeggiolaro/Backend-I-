@@ -3,11 +3,10 @@ import { CartManager } from '../dao/CartManager.js';
 import { ProductosManager } from '../dao/productosManager.js';
 const renderRouter = Router();
 
-
-
+const productosManager = new ProductosManager()
+const cartManager = new CartManager()
 
 renderRouter.get('/products', async (req, res) => {
-    const productosManager = new ProductosManager()
 
     const { limit = 10, page = 1, sort, query } = req.query;
 
@@ -16,7 +15,6 @@ renderRouter.get('/products', async (req, res) => {
 });
 
 renderRouter.get('/products/:pid', async (req, res) => {
-    const productosManager = new ProductosManager()
     const productId = req.params.pid
 
     const product = await (productosManager.getProduct(productId))
@@ -24,7 +22,7 @@ renderRouter.get('/products/:pid', async (req, res) => {
 });
 
 renderRouter.get('/carts/:cid', async (req, res) => {
-    const cartManager = new CartManager()
+
     const cartId = req.params.cid
 
     const cart = await (cartManager.getCart(cartId))
